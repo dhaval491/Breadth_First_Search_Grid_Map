@@ -138,7 +138,7 @@ vector<pair<int,int>> trace_path(unordered_map<pair<int,int>,pair<int,int>, hash
     sol_rev.push_back(point); // push the first point that is destination to the path 
     vector<pair<int,int>> sol;
     pair<int,int> temp = point;
-    while(temp != source)
+    while(temp != source) // Start tracing while the parent obtained is source
     {
         temp = mymap[temp]; // add the parent to the path
         //cout<<temp.first<<" "<<temp.second<<endl;
