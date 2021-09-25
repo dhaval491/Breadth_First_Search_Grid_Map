@@ -34,15 +34,17 @@ int main()
                           {1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1},
                           {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1},
                           {1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1},
-                          {1, 1, 1, 0, 1, 1, 1, 0, 1, 32, 1},
+                          {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
                           {1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1}};
 
-    pair<int,int> source = pair<int,int>(0,0);
-    pair<int,int> dest = pair<int,int>(6,4);
+    pair<int,int> source = pair<int,int>(8,2);
+    pair<int,int> dest = pair<int,int>(0,10);
     vector<pair<int,int>> path = bfs(source,dest,grid);
     print_path(path);
 
     //cout<<grid[dest.first][dest.second]<<endl;
+    //shortest path from source to destination is
+    //(8, 2) -> (9, 3) -> (8, 4) -> (7, 5) -> (8, 6) -> (9, 7) -> (8, 8) -> (7, 8) -> (6, 8) -> (5, 8) -> (4, 8) -> (3, 8) -> (2, 8) -> (1, 9) -> (0, 10)
 
 
     return 0;
@@ -65,10 +67,10 @@ vector<pair<int,int>> get_neigbors(pair<int,int> node,vector<int> dc, vector<int
     vector<pair<int,int>> sol;
     for(int i =0;i<dc.size();i++)
     {
-        int x = node.first+dc[i]; // find the coordinates of new node
-        int y = node.second+dr[i];
+        int x = node.first+dr[i]; // find the coordinates of new node
+        int y = node.second+dc[i];
         // check the validity of node if outside the grid or on the obstacle
-        if( x<0 || y < 0 || x > ROW || x> COL) continue;
+        if( x < 0 || y < 0 || x >= ROW || y >= COL) continue;
         if(grid[x][y] == 0) continue;
         //if valid then add it the solution
         pair<int,int> next{x,y};
@@ -84,7 +86,7 @@ vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW]
     vector<pair<int,int>> sol;
     bool visited[ROW][COL];
     // Make a visited grid of same size with the grid and set all elements to false
-    for(int i = 0;i< ROW;i++)
+    for(int i = 0;i < ROW;i++)
     {
         for(int j = 0;j < COL; j++)
         {
@@ -140,6 +142,6 @@ vector<pair<int,int>> trace_path(unordered_map<pair<int,int>,pair<int,int>, hash
         sol_rev.push_back(temp);
     }
     reverse(sol_rev.begin(),sol_rev.end()); // reverse the path
-
+    
     return sol_rev;
 }
