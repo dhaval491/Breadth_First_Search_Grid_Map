@@ -34,18 +34,21 @@ int main()
                           {1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1},
                           {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1},
                           {1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1},
-                          {1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1},
+                          {1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1},
                           {1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1}};
 
-    pair<int,int> source = pair<int,int>(8,2);
-    pair<int,int> dest = pair<int,int>(0,10);
+    pair<int,int> source = pair<int,int>(1,1);
+    pair<int,int> dest = pair<int,int>(7,8);
     vector<pair<int,int>> path = bfs(source,dest,grid);
     print_path(path);
 
     //cout<<grid[dest.first][dest.second]<<endl;
     //shortest path from source to destination is
     //(8, 2) -> (9, 3) -> (8, 4) -> (7, 5) -> (8, 6) -> (9, 7) -> (8, 8) -> (7, 8) -> (6, 8) -> (5, 8) -> (4, 8) -> (3, 8) -> (2, 8) -> (1, 9) -> (0, 10)
-
+   // shortest path from source to destination is
+     //(4, 1) -> (5, 2) -> (6, 3) -> (5, 4) -> (6, 5) -> (7, 6) -> (8, 7) -> (7, 8)
+    // shortest path from source to destination is
+    // (1, 1) -> (2, 1) -> (3, 2) -> (4, 2) -> (5, 2) -> (6, 3) -> (5, 4) -> (6, 5) -> (7, 6) -> (8, 7) -> (7, 8)
 
     return 0;
 }
