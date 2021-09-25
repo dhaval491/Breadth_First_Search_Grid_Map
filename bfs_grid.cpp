@@ -6,6 +6,7 @@
 #include<vector>
 #include<map>
 #include<unordered_map>
+#include<algorithm>
 #define ROW 10
 #define COL 11
 using namespace std;
@@ -30,14 +31,14 @@ int main()
                           {1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1},
                           {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                           {1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1},
-                          {1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1},
+                          {1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1},
                           {1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1},
                           {1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1},
                           {1, 1, 1, 0, 1, 1, 1, 0, 1, 32, 1},
                           {1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1}};
 
     pair<int,int> source = pair<int,int>(0,0);
-    pair<int,int> dest = pair<int,int>(8,2);
+    pair<int,int> dest = pair<int,int>(6,4);
     vector<pair<int,int>> path = bfs(source,dest,grid);
     print_path(path);
 
@@ -57,15 +58,19 @@ void print_path(vector<pair<int,int>> path)
     cout<<"("<<path[i].first<<", "<<path[i].second<<")";
     cout<<endl;
 }
+
 vector<pair<int,int>> get_neigbors(pair<int,int> node,vector<int> dc, vector<int> dr,int grid[ROW][COL])
 {
+ // Function to explore neighbours in 6 directions  
     vector<pair<int,int>> sol;
     for(int i =0;i<dc.size();i++)
     {
-        int x = node.first+dc[i];
+        int x = node.first+dc[i]; // find the coordinates of new node
         int y = node.second+dr[i];
+        // check the validity of node if outside the grid or on the obstacle
         if( x<0 || y < 0 || x > ROW || x> COL) continue;
         if(grid[x][y] == 0) continue;
+        //if valid then add it the solution
         pair<int,int> next{x,y};
         sol.push_back(next);
     }
@@ -75,8 +80,10 @@ vector<pair<int,int>> get_neigbors(pair<int,int> node,vector<int> dc, vector<int
 
 vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW][COL])
 {
+    
     vector<pair<int,int>> sol;
     bool visited[ROW][COL];
+    // Make a visited grid of same size with the grid and set all elements to false
     for(int i = 0;i< ROW;i++)
     {
         for(int j = 0;j < COL; j++)
@@ -84,12 +91,14 @@ vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW]
             visited[i][j] = false;
         }
     }
-
+    // map to store the node mapping to its parent
     unordered_map<pair<int,int>,pair<int,int>,hash_pair> mymap;
-    vector<int> dr{-1,0,1,0};
-    vector<int> dc{0,1,0,-1};
+    // direction vectors
+    vector<int> dr{-1,-1, 0,  1,  1,  1,  0};
+    vector<int> dc{ 0, 1, 1,  1,  0, -1, -1};
+    // Making a que to store next node to be visited
     queue<pair<int,int>> Que;
-    Que.push(source);bool found = false;
+    Que.push(source);bool found = false; // make a variable to check if the destination is found
     while(!Que.empty())
     {
         vector<pair<int,int>> neighors;
@@ -98,41 +107,39 @@ vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW]
         neighors  = get_neigbors(node,dc,dr,grid);
         for(int i = 0;i<neighors.size();i++)
         {
+            // if not visited select this node
             if(visited[neighors[i].first][neighors[i].second] == false)
             {
-            visited[neighors[i].first][neighors[i].second] = true;
-            Que.push(pair<int,int>(neighors[i]));
-            mymap[neighors[i]] = node;
-            if(neighors[i] == dest) 
-            {
-                found = true;
-                break;
-            }
+                visited[neighors[i].first][neighors[i].second] = true; // mark it to be visited
+                Que.push(pair<int,int>(neighors[i])); // add it to the queue
+                mymap[neighors[i]] = node;
+                if(neighors[i] == dest)  // if the destination is reached set the found flag and break
+                {
+                    found = true;
+                    break;
+                 }
             }
             
         }
-        if(found) break;
+        if(found) break; // if destiantion is found stop the search
     }
-    sol = trace_path(mymap,dest,source);
+    sol = trace_path(mymap,dest,source); // trace back the path from source to destination
     return sol;
 
 }
 vector<pair<int,int>> trace_path(unordered_map<pair<int,int>,pair<int,int>, hash_pair>mymap,pair<int,int> point,pair<int,int> source)
 {
     vector<pair<int,int>> sol_rev;
-    sol_rev.push_back(point);
+    sol_rev.push_back(point); // push the first point that is destination to the path 
     vector<pair<int,int>> sol;
     pair<int,int> temp = point;
     while(temp != source)
     {
-        temp = mymap[temp];
+        temp = mymap[temp]; // add the parent to the path
         //cout<<temp.first<<" "<<temp.second<<endl;
         sol_rev.push_back(temp);
     }
+    reverse(sol_rev.begin(),sol_rev.end()); // reverse the path
 
-    for(auto it = sol_rev.rbegin();it != sol_rev.rend();it++)
-    {
-        sol.push_back(*it);
-    }
-    return sol;
+    return sol_rev;
 }
