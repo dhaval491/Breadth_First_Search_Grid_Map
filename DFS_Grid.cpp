@@ -93,21 +93,23 @@ vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW]
     // direction vectors
     vector<int> dr{-1,0,1,0}; //dr{-1,-1, 0,  1,  1,  1,  0};
     vector<int> dc{0,1,0,-1};//dc{ 0, 1, 1,  1,  0, -1, -1};
-    stack<pair<int,int>> stk;
+    stack<pair<int,int>> stk; // use a stack to store the most recent explored cell
     stk.push(source);
     bool found  = false;
     while(!stk.empty() && !found)
     {
+        // here we will insert every unexplored cells on stack and will explore the cell that is recently visited; We will repeat it until 
+        // we have explore all the neighbours or found the destination.
         pair<int,int> node = stk.top(); stk.pop();
         visited[node.first][node.second] = true;
         vector<pair<int,int>> neighbors;
-        neighbors  = get_neighbors(node,dc,dr,grid);
-        for(int i = 0;i< neighbors.size();i++)
+        neighbors  = get_neighbors(node,dc,dr,grid); // generate only neighbours that are not ocupied and not outside the grid;
+        for(int i = 0;i< neighbors.size();i++) 
         {
-            if(visited[neighbors[i].first][neighbors[i].second] == false)
+            if(visited[neighbors[i].first][neighbors[i].second] == false) // check if the cell is visited already
             {
-                stk.push(neighbors[i]);
-                mymap[neighbors[i]] = node;
+                stk.push(neighbors[i]); // keep inserting the new neighbors
+                mymap[neighbors[i]] = node;  // store the parentof the visited node
                 if(neighbors[i] == dest) 
                 {
                     found = true;
