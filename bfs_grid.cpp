@@ -99,8 +99,8 @@ vector<pair<int,int>> bfs(pair<int,int> source,pair<int,int> dest, int grid[ROW]
     // map to store the node mapping to its parent
     unordered_map<pair<int,int>,pair<int,int>,hash_pair> mymap;
     // direction vectors
-    vector<int> dr{-1,-1, 0,  1,  1,  1,  0};
-    vector<int> dc{ 0, 1, 1,  1,  0, -1, -1};
+    vector<int> dr{-1,-1, 0,  1,  1,  1,  0, -1};
+    vector<int> dc{ 0, 1, 1,  1,  0, -1, -1, -1};
     // Making a que to store next node to be visited
     queue<pair<int,int>> Que;
     Que.push(source);bool found = false; // make a variable to check if the destination is found
