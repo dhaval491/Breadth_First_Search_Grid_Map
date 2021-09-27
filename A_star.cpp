@@ -192,35 +192,5 @@ int main()
     pair<int,int> dest = pair<int,int>(8,5);
     vector<pair<int,int>> path = aStar(grid,source,dest);
     print_path(path);
+ return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
