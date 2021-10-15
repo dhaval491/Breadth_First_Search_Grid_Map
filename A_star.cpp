@@ -156,7 +156,7 @@ vector<pair<int,int>> aStar(int grid[][COL], pair<int,int> &src, pair<int,int> &
 
     if(foundDest)
     {
-        cout<<"found dest with cost "<< cost_grid[dest.first][dest.second].f*10<<endl;
+        cout<<"found dest with cost "<<endl;
         sol = trace_path(cost_grid,dest); 
 
         break;
