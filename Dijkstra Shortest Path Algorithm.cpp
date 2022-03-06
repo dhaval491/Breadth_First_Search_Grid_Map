@@ -4,6 +4,9 @@
 #include<vector>
 #include<algorithm>
 #include<math.h>
+#include<cfloat>
+#include <cstring>
+
 #define ROW 10
 #define COL 11
 
@@ -91,7 +94,6 @@ vector<pair<int,int>> Dijstra(int grid[][COL], pair<int,int> &src, pair<int,int>
             cell temp;
             temp.f = FLT_MAX;
             temp.g = FLT_MAX;
-            temp.h = FLT_MAX;
             temp.parent_i = -1;
             temp.parent_j = -1;
             cellRow.push_back(temp);
@@ -102,7 +104,6 @@ vector<pair<int,int>> Dijstra(int grid[][COL], pair<int,int> &src, pair<int,int>
     i = src.first; j = src.second;
     cost_grid[i][j].f = 0;
     cost_grid[i][j].g = 0;
-    cost_grid[i][j].h = 0;
     cost_grid[i][j].parent_i = i;
     cost_grid[i][j].parent_j = j;
 
