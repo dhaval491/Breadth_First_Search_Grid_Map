@@ -7,7 +7,7 @@
 #define ROW 10
 #define COL 11
 
-/// Astar shortest path planning //
+
 using namespace std;
 struct cell{
     int parent_i,parent_j;
