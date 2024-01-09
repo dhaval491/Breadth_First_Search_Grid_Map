@@ -45,8 +45,8 @@ vector<pair<int,int>> get_neighbours( int r, int c, vector<int> dr, vector<int> 
 
 vector<pair<int,int>> trace_path(vector<vector<cell>> &cost_grid, pair<int,int> &dest)
 {
-    vector<pair<int,int>> path;
-    int row = dest.first;
+    vector<pair<int,int>> path; 
+    int row = dest.first; // parent heirachy start from dest so we find parents from this starting point
     int col = dest.second;
     stack<pair<int,int>> Path;
     while(!(cost_grid[row][col].parent_i == row && cost_grid[row][col].parent_j == col))
@@ -60,7 +60,7 @@ vector<pair<int,int>> trace_path(vector<vector<cell>> &cost_grid, pair<int,int> 
     }
     cout<<endl;
      path.push_back(make_pair(row,col));
-    reverse(path.begin(),path.end());
+    reverse(path.begin(),path.end()); // since we have stored dest to src parents, reversing it will give src to dest child list
     return path;
 }
 
@@ -106,7 +106,8 @@ vector<pair<int,int>> aStar(int grid[][COL], pair<int,int> &src, pair<int,int> &
     cost_grid[i][j].parent_i = i;
     cost_grid[i][j].parent_j = j;
 
-    set<pair<double,pair<int,int>>> openlist;
+    set<pair<double,pair<int,int>>> openlist; // priority list showing that which cell has the lowest possible cost
+    // so that we explore that cell first and update it
 
     openlist.insert(make_pair(0.0,make_pair(i,j)));
     //int pPair = pair<double,pair<int,int>>;
@@ -124,6 +125,8 @@ vector<pair<int,int>> aStar(int grid[][COL], pair<int,int> &src, pair<int,int> &
 
         double gNew, hNew, fNew;
         vector<pair<int,int>> neighbors = get_neighbours(i,j,dr,dc);
+        // explore neighbours and calculate thei cost, if the cost from this cell is less than whats already in
+        // cost grid of this neighbour then update the cost and make this cell their parent
         for(int k = 0;k<neighbors.size();k++)
         {
             pair<int,int> node = neighbors[k];
@@ -135,10 +138,12 @@ vector<pair<int,int>> aStar(int grid[][COL], pair<int,int> &src, pair<int,int> &
                 foundDest = true; 
                 break;
             }
+            // if the current neighbour has not been explored and is unblockec check if you can update its cost and make the current cell
+                // the parent of this neighbor
             else if(closedList[x][y] == false && is_unblocked(grid,x,y) == true)
             {
-                gNew = cost_grid[i][j].g + 1.0;
-                hNew = calculate_h(x,y,dest);
+                gNew = cost_grid[i][j].g + 1.0; // cost from src
+                hNew = calculate_h(x,y,dest); // cost from dest to neighbor
                 fNew = gNew + hNew;
                 if(cost_grid[x][y].f == FLT_MAX || cost_grid[x][y].f>fNew)
                 {
